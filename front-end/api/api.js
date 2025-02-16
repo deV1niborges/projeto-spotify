@@ -1,8 +1,10 @@
 // Fetch ou Axios
 
 import axios from "axios";
+import "dotenv/config";
 
-const URl = "http://localhost:3000";
+const { NODE_ENV } = process.env;
+const URl = NODE_ENV === "development" ? "http://localhost:3000/api" : "/api";
 
 const responseArtists = await axios.get(`${URl}/artists`);
 const responseSongs = await axios.get(`${URl}/songs`);
