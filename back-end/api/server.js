@@ -12,7 +12,7 @@ import path from "path";
 const __dirname = path.resolve();
 
 const app = express();
-const PORT = 3001;
+const PORT = 3000;
 
 app.use(cors());
 // app.use(express.json());
