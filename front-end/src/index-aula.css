@@ -1,10 +1,7 @@
-@charset "UTF-8";
-
 /* Reset */
-
 * {
-  margin: 0px;
-  padding: 0px;
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
@@ -28,10 +25,10 @@ a {
 /* Header */
 
 .header {
+  padding: 10px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
 }
 
 .header__link:hover {
@@ -41,18 +38,18 @@ a {
 /* Main */
 
 .main {
+  background-color: brown;
+  padding: 20px;
+  margin: 0 10px 10px;
+  border-radius: 15px;
   flex: 1;
   background-image: linear-gradient(to bottom, #062d14, black);
-  border-radius: 15px;
-  margin: 0px 10px 10px;
-  padding: 20px;
 }
 
 .main__texts {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
 }
 
 .main__link:hover {

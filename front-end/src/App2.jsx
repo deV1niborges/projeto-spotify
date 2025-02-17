@@ -54,7 +54,7 @@ export default App2;
 
 // Componentes recebem "props"
 
-// {
+{
   /* {items === 5 ? (
           <>
             <SingleItem />
@@ -77,7 +77,7 @@ export default App2;
             <SingleItem />
           </>
         )} */
-// }
+}
 
 // Array(items)
 //           .fill()

@@ -34,14 +34,20 @@ const Player = ({
   randomId2FromArtist,
   audio,
 }) => {
+  // const audioPlayer...
   const audioPlayer = useRef();
   const progressBar = useRef();
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(formatTime(0));
   const durationInSeconds = timeInSeconds(duration);
 
+  // console.log(durationInSeconds);
+
+  // função
+  // console.log(audioPlayer.current.play());
   const playPause = () => {
     isPlaying ? audioPlayer.current.pause() : audioPlayer.current.play();
+
     setIsPlaying(!isPlaying);
 
     // console.log(formatTime(audioPlayer.current.currentTime));
@@ -51,6 +57,7 @@ const Player = ({
     const intervalId = setInterval(() => {
       if (isPlaying)
         setCurrentTime(formatTime(audioPlayer.current.currentTime));
+
       progressBar.current.style.setProperty(
         "--_progress",
         (audioPlayer.current.currentTime / durationInSeconds) * 100 + "%"
@@ -60,7 +67,7 @@ const Player = ({
     return () => clearInterval(intervalId);
   }, [isPlaying]);
 
-  // setIsPlaying(false);
+  // setIsPlaying(false)
 
   return (
     <div className="player">
@@ -68,15 +75,18 @@ const Player = ({
         <Link to={`/song/${randomIdFromArtist}`}>
           <FontAwesomeIcon className="player__icon" icon={faBackwardStep} />
         </Link>
+
         <FontAwesomeIcon
           className="player__icon player__icon--play"
           icon={isPlaying ? faCirclePause : faCirclePlay}
           onClick={() => playPause()}
         />
+
         <Link to={`/song/${randomId2FromArtist}`}>
           <FontAwesomeIcon className="player__icon" icon={faForwardStep} />
         </Link>
       </div>
+
       <div className="player__progress">
         <p>{currentTime}</p>
 

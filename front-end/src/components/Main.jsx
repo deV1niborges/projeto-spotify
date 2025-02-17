@@ -19,10 +19,10 @@ const Main = ({ type }) => {
         <></>
       )}
 
-      {/* Item List de Musicas */}
+      {/* Item List de Músicas */}
       {type === "songs" || type === undefined ? (
         <ItemList
-          title="Musicas"
+          title="Músicas"
           items={20}
           itemsArray={songsArray}
           path="/songs"
