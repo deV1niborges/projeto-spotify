@@ -3,7 +3,7 @@ import axios from "axios";
 
 // const { NODE_ENV } = process.env;
 // const URL = "http://localhost:3001/api";
-const URL = "https://projeto-spotify.onrender.com/api";
+const URL = "http://localhost:3000/api";
 
 const responseArtists = await axios.get(`${URL}/artists`);
 const responseSongs = await axios.get(`${URL}/songs`);
