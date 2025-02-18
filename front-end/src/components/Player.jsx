@@ -54,17 +54,28 @@ const Player = ({
   };
 
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      if (isPlaying)
+    let animationFrameId;
+  
+    const updateProgress = () => {
+      if (isPlaying) {
         setCurrentTime(formatTime(audioPlayer.current.currentTime));
-
-      progressBar.current.style.setProperty(
-        "--_progress",
-        (audioPlayer.current.currentTime / durationInSeconds) * 100 + "%"
-      );
-    }, 1000);
-
-    return () => clearInterval(intervalId);
+        progressBar.current.style.setProperty(
+          "--_progress",
+          (audioPlayer.current.currentTime / durationInSeconds) * 100 + "%"
+        );
+        animationFrameId = requestAnimationFrame(updateProgress);
+      }
+    };
+  
+    if (isPlaying) {
+      animationFrameId = requestAnimationFrame(updateProgress);
+    }
+  
+    return () => {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+    };
   }, [isPlaying]);
 
   // setIsPlaying(false)
