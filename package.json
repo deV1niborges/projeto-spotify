@@ -17,5 +17,8 @@
     "url": "https://github.com/deV1niborges/projeto-spotify/issues"
   },
   "homepage": "https://github.com/deV1niborges/projeto-spotify#readme",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "esbuild": "^0.25.0"
+  }
 }
