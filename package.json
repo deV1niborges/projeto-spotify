@@ -20,5 +20,8 @@
   "description": "",
   "devDependencies": {
     "esbuild": "^0.25.0"
+  },
+  "dependencies": {
+    "vite": "^6.2.3"
   }
 }
