@@ -1,0 +1,22 @@
+{
+  "name": "back-end",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./api/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "type": "module",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "deploy": "file:..",
+    "express": "^5.1.0",
+    "mongodb": "^6.15.0",
+    "path": "^0.12.7",
+    "vite": "^6.2.4"
+  }
+}

@@ -1,0 +1,36 @@
+name: Update Dependencies
+on:
+  schedule:
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Update Dependencies
+        run: |
+          # Ignora erros de pacotes opcionais
+          npm install -g npm-check-updates
+          ncu -u || echo "Continuing despite potential warnings"
+          npm install --package-lock-only
+
+      - name: Commit Changes
+        if: github.ref == 'refs/heads/main'
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+
+          # Adiciona APENAS os arquivos que devem ser versionados
+          git add package.json package-lock.json
+
+          # Commit apenas se houver mudanças reais
+          git diff --cached --quiet || (git commit -m "chore(deps): auto-update dependencies" && git push)
