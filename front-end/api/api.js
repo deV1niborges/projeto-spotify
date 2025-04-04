@@ -2,8 +2,8 @@
 import axios from "axios";
 
 // const { NODE_ENV } = process.env;
-// const URL = "http://localhost:3000/api";
-const URL = "https://projeto-spotify-r3bz.onrender.com/api";  //colocar url/api quando fizer deploy
+const URL = "http://localhost:3000/api";
+// const URL = "https://projeto-spotify-r3bz.onrender.com/api";  //colocar url/api quando fizer deploy
 // node --watch ./api/server.js = rodar servidor back-end
 
 const responseArtists = await axios.get(`${URL}/artists`);
