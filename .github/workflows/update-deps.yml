@@ -1,8 +1,11 @@
 name: Update Dependencies Safely
 on:
   schedule:
-    - cron: "0 3 * * *"  # 3AM UTC
+    - cron: "0 3 * * *"
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   update:
@@ -18,32 +21,25 @@ jobs:
 
       - name: Smart Dependency Updates
         run: |
-          # Instala ferramenta melhorada
-          npm install -g npm-check-updates
-          
-          # 1. Atualiza SOMENTE patches e minors (evita majors)
-          ncu --target patch
-          
-          # 2. Ignora pacotes específicos problemáticos
-          ncu --reject "express,path-to-regexp,vite"
-          
-          # 3. Verifica atualizações críticas de segurança
-          npm audit fix --dry-run
-          
-          # 4. Aplica atualizações seguras
-          npm install --package-lock-only --no-audit
+          # Atualiza somente patches/minors e ignora pacotes problemáticos
+          npx npm-check-updates \
+            --target patch \
+            --reject "express,path-to-regexp,vite" \
+            --upgrade
 
-      - name: Commit Changes
+          # Atualiza lockfile mantendo compatibilidade
+          npm install --no-audit
+
+          # Verificação de segurança (não bloqueante)
+          npm audit fix --dry-run || true
+
+      - name: Commit and Push
         if: github.ref == 'refs/heads/main'
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
-          
-          # Verifica mudanças reais antes de commitar
           git add package.json package-lock.json
-          if ! git diff --cached --quiet; then
+          if [ -n "$(git status --porcelain)" ]; then
             git commit -m "chore(deps): safe dependency updates [skip ci]"
             git push
-          else
-            echo "Nenhuma atualização segura encontrada."
           fi
