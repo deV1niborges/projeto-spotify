@@ -2,27 +2,20 @@ name: Update Dependencies Safely
 
 on:
   schedule:
-    - cron: "0 3 * * *" # roda todos os dias às 03:00 UTC
-  workflow_dispatch:
-
-permissions:
-  contents: write
+    - cron: '0 0 * * 0' # roda todo domingo à meia-noite
+  workflow_dispatch: # permite rodar manualmente
 
 jobs:
   update:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # necessário para rebase
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
-          cache: "npm"
+          node-version: 20
 
       - name: Set up Git config
         run: |
@@ -30,26 +23,29 @@ jobs:
           git config --global user.email "actions@github.com"
 
       - name: Pull latest changes first
-        run: git pull --rebase origin main
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "There are unstaged changes. Skipping pull."
+          else
+            git pull origin main
+          fi
 
       - name: Update dependencies (back-end & front-end)
         run: |
-          npx npm-check-updates --target patch --upgrade --packageFile back-end/package.json
-          npx npm-check-updates --target patch --upgrade --packageFile front-end/package.json
           npm install --prefix back-end
+          npm update --prefix back-end
           npm install --prefix front-end
+          npm update --prefix front-end
 
       - name: Debug modified files
-        run: |
-          git status
-          git diff --name-only
+        run: git status
 
       - name: Commit and Push
-        if: github.ref == 'refs/heads/main'
         run: |
           if [ -n "$(git status --porcelain)" ]; then
-            git add back-end/package*.json front-end/package*.json
-            git commit -m "chore(deps): safe dependency updates [skip ci]"
+            git add .
+            git commit -m "chore: update dependencies"
             git push
           else
-            echo "No changes to commit"
+            echo "No changes to commit."
+          fi
