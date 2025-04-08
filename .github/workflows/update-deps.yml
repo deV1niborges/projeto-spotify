@@ -1,4 +1,5 @@
 name: Update Dependencies Safely
+
 on:
   schedule:
     - cron: "0 3 * * *"
@@ -58,4 +59,3 @@ jobs:
             git push
           else
             echo "No changes to commit"
-          fitraduz
