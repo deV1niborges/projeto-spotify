@@ -11,7 +11,7 @@ jobs:
   update:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4  # Nome corrigido aqui
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -39,11 +39,23 @@ jobs:
       - name: Commit and Push
         if: github.ref == 'refs/heads/main'
         run: |
+          # Configure git
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
-          git pull --rebase origin main
-          git add package.json package-lock.json
-          if [ -n "$(git diff --staged)" ]; then
+          
+          # Check if there are changes to commit
+          if [ -n "$(git status --porcelain)" ]; then
+            # Stage changes
+            git add package.json package-lock.json
+            
+            # Commit changes
             git commit -m "chore(deps): safe dependency updates [skip ci]"
+            
+            # Pull latest changes with rebase
+            git pull --rebase origin main
+            
+            # Push changes
             git push
-          fi
+          else
+            echo "No changes to commit"
+          fitraduz
