@@ -12,6 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Garante o histórico completo para rebase
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -21,25 +23,31 @@ jobs:
 
       - name: Smart Dependency Updates
         run: |
-          # Atualiza somente patches/minors e ignora pacotes problemáticos
           npx npm-check-updates \
             --target patch \
             --reject "express,path-to-regexp,vite" \
             --upgrade
-
-          # Atualiza lockfile mantendo compatibilidade
+          
           npm install --no-audit
-
-          # Verificação de segurança (não bloqueante)
           npm audit fix --dry-run || true
 
       - name: Commit and Push
         if: github.ref == 'refs/heads/main'
         run: |
+          # Configuração do Git
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
+          
+          # Atualiza a branch local com a remote
+          git pull --rebase origin main
+          
+          # Adiciona APENAS os arquivos desejados
           git add package.json package-lock.json
-          if [ -n "$(git status --porcelain)" ]; then
+          
+          # Verifica se há mudanças específicas para commitar
+          if [ -n "$(git diff --staged --name-only)" ]; then
             git commit -m "chore(deps): safe dependency updates [skip ci]"
             git push
+          else
+            echo "Nenhuma alteração relevante detectada."
           fi
