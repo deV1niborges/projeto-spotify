@@ -2,8 +2,8 @@ name: Update Dependencies Safely
 
 on:
   schedule:
-    - cron: "0 3 * * *"  # Roda todo dia às 03:00 UTC
-  workflow_dispatch:      # Permite rodar manualmente pelo GitHub
+    - cron: "0 3 * * *" # roda todos os dias às 03:00 UTC
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -11,10 +11,12 @@ permissions:
 jobs:
   update:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 0 # necessário para rebase
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -22,15 +24,20 @@ jobs:
           node-version: "20"
           cache: "npm"
 
-      - name: Smart Dependency Updates
+      - name: Set up Git config
         run: |
-          npx npm-check-updates \
-            --target patch \
-            --reject "express,path-to-regexp,vite" \
-            --upgrade
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
 
-          npm install --no-audit
-          npm audit fix --dry-run || true
+      - name: Pull latest changes first
+        run: git pull --rebase origin main
+
+      - name: Update dependencies (back-end & front-end)
+        run: |
+          npx npm-check-updates --target patch --upgrade --packageFile back-end/package.json
+          npx npm-check-updates --target patch --upgrade --packageFile front-end/package.json
+          npm install --prefix back-end
+          npm install --prefix front-end
 
       - name: Debug modified files
         run: |
@@ -40,23 +47,9 @@ jobs:
       - name: Commit and Push
         if: github.ref == 'refs/heads/main'
         run: |
-          # Configure git
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-
-          # Pull latest changes with rebase BEFORE modifying anything
-          git pull --rebase origin main
-
-          # Check if there are changes to commit
           if [ -n "$(git status --porcelain)" ]; then
-            # Stage changes
-            git add package.json package-lock.json
-
-            # Commit changes
+            git add back-end/package*.json front-end/package*.json
             git commit -m "chore(deps): safe dependency updates [skip ci]"
-
-            # Push changes
             git push
           else
             echo "No changes to commit"
-
