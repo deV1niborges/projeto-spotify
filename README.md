@@ -9,3 +9,10 @@ O processo é feito de forma segura, garantindo que todas as bibliotecas estejam
 
 As atualizações são realizadas semanalmente e qualquer alteração é automaticamente versionada e enviada para o repositório.
 
+---
+
+## 🌐 Acesso ao Projeto
+
+Você pode acessar o projeto através do link abaixo:
+
+🔗 [Projeto Spotify](https://projeto-spotify-k0wm.onrender.com)
