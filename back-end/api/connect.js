@@ -3,12 +3,19 @@
 // Fullfilled
 import { MongoClient } from "mongodb";
 
-const URL =
-  "mongodb+srv://Vborges12:CGyDHdKjkPuGW1hN@cluster0.9y3hx.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const URL = process.env.MONGODB_URI;
+
+if (!URL) {
+  throw new Error("MONGODB_URI não foi configurada.");
+}
 
 const client = new MongoClient(URL);
 
+await client.connect();
+
 export const db = client.db("spotifyAula");
+
+console.log("MongoDB conectado com sucesso.");
 // const songCollection = await db.collection("songs").find({}).toArray();
 
 // console.log(songCollection);
