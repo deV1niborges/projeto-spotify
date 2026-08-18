@@ -15,4 +15,4 @@ As atualizações são realizadas semanalmente e qualquer alteração é automat
 
 Você pode acessar o projeto através do link abaixo:
 
-🔗 [Projeto Spotify](https://projeto-spotify-k0wm.onrender.com)
+🔗 [Projeto Spotify](https://spotify-study-dev1niborges.onrender.com/)
