@@ -241,7 +241,8 @@ img {
   height: 40svh;
   background-size: cover;
   background-position-y: 20%;
-  background-image: linear-gradient(to bottom, var(--_shade), var(--_shade)),
+  background-image:
+    linear-gradient(to bottom, var(--_shade), var(--_shade)),
     url(https://i.scdn.co/image/ab67618600001016909a162796dbc3629a1fadeb);
 }
 
@@ -499,4 +500,14 @@ img {
     grid-row: 2;
     grid-column: 1 / span 2;
   }
+}
+
+.project-disclaimer {
+  width: 100%;
+  padding: 12px 10px;
+  text-align: center;
+  font-size: 11px;
+  color: #777;
+  background-color: #000;
+  border-top: 1px solid #181818;
 }

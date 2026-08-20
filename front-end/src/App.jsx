@@ -19,6 +19,11 @@ const App = () => {
         <Route path="/songs" element={<Songs />} />
         <Route path="/song/:id" element={<Song />} />
       </Routes>
+
+      <footer className="project-disclaimer">
+        Projeto educacional independente • Não afiliado ao Spotify
+      </footer>
+      
     </BrowserRouter>
   );
 };
